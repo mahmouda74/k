@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazameza - E-commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: #f8f9fa;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .auth-content {
+            padding: 40px;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .role-selection {
+            display: none;
+            text-align: center;
+        }
+
+        .role-selection.active {
+            display: block;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .role-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .role-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .role-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .dashboard-nav {
+            background: #f8f9fa;
+            padding: 0;
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            padding: 20px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 16px;
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .dashboard-content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .product-grid, .order-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card, .order-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover, .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-in-progress {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-delivered {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .role-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-nav {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-grid, .order-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ Kazameza</h1>
+            <p>Your Complete E-commerce Solution</p>
+        </div>
+
+        <!-- Authentication Container -->
+        <div class="auth-container" id="authContainer">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('phone')">Phone Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('google')">Google Login</button>
+            </div>
+            
+            <div class="auth-content">
+                <!-- Phone Login Form -->
+                <div class="auth-form active" id="phoneAuth">
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" placeholder="+1234567890" required>
+                    </div>
+                    <button class="btn" onclick="sendOTP()">Send OTP</button>
+                    
+                    <div id="otpSection" style="display: none;">
+                        <div class="form-group">
+                            <label for="otpCode">Enter OTP</label>
+                            <input type="text" id="otpCode" placeholder="Enter 6-digit code" maxlength="6">
+                        </div>
+                        <button class="btn" onclick="verifyOTP()">Verify OTP</button>
+                    </div>
+                </div>
+
+                <!-- Google Login Form -->
+                <div class="auth-form" id="googleAuth">
+                    <button class="btn" onclick="googleLogin()">🔍 Continue with Google</button>
+                    <p style="text-align: center; color: #666; margin-top: 20px;">
+                        Quick and secure login with your Google account
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="role-selection" id="roleSelection">
+            <h2 style="color: white; margin-bottom: 20px;">Choose Your Role</h2>
+            <div class="role-cards">
+                <div class="role-card" onclick="selectRole('merchant')">
+                    <h3>🏪 Merchant</h3>
+                    <p>Manage your store, add products, track orders, and grow your business on Kazameza</p>
+                </div>
+                <div class="role-card" onclick="selectRole('marketer')">
+                    <h3>📈 Marketer</h3>
+                    <p>Browse products, create orders for customers, earn commissions from sales</p>
+                </div>
+                <div class="role-card" onclick="selectRole('delivery')">
+                    <h3>🚚 Delivery Agent</h3>
+                    <p>Accept delivery orders, manage routes, confirm payments, and earn delivery fees</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Merchant Dashboard -->
+        <div class="dashboard" id="merchantDashboard">
+            <div class="dashboard-header">
+                <h2>Merchant Dashboard</h2>
+                <p>Welcome back! Manage your store and track your business performance.</p>
+            </div>
+            
+            <div class="dashboard-nav">
+                <button class="nav-btn active" onclick="switchDashboardTab('merchant', 'overview')">Overview</button>
+                <button class="nav-btn" onclick="switchDashboardTab('merchant', 'products')">Products</button>
+                <button class="nav-btn" onclick="switchDashboardTab('merchant', 'orders')">Orders</button>
+                <button class="nav-btn" onclick="switchDashboardTab('merchant', 'settings')">Settings</button>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Merchant Overview -->
+                <div class="dashboard-section active" id="merchant-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3 id="totalProducts">12</h3>
+                            <p>Total Products</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalOrders">45</h3>
+                            <p>Total Orders</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalRevenue">$2,340</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="pendingOrders">8</h3>
+                            <p>Pending Orders</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Merchant Products -->
+                <div class="dashboard-section" id="merchant-products">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                        <h3>Product Management</h3>
+                        <button class="btn" onclick="openAddProductModal()" style="width: auto;">Add New Product</button>
+                    </div>
+                    <div class="product-grid" id="merchantProductGrid">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Merchant Orders -->
+                <div class="dashboard-section" id="merchant-orders">
+                    <h3>Order Management</h3>
+                    <div class="order-grid" id="merchantOrderGrid">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Merchant Settings -->
+                <div class="dashboard-section" id="merchant-settings">
+                    <h3>Store Settings</h3>
+                    <div class="form-group">
+                        <label for="storeName">Store Name</label>
+                        <input type="text" id="storeName" value="My Awesome Store">
+                    </div>
+                    <div class="form-group">
+                        <label for="storeAddress">Store Address</label>
+                        <textarea id="storeAddress" rows="3">123 Business Street, City, State</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="storePhone">Contact Number</label>
+                        <input type="tel" id="storePhone" value="+1234567890">
+                    </div>
+                    <div class="form-group">
+                        <label for="businessHours">Business Hours</label>
+                        <input type="text" id="businessHours" value="9:00 AM - 8:00 PM">
+                    </div>
+                    <button class="btn">Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marketer Dashboard -->
+        <div class="dashboard" id="marketerDashboard">
+            <div class="dashboard-header">
+                <h2>Marketer Dashboard</h2>
+                <p>Browse products, create orders, and earn commissions!</p>
+            </div>
+            
+            <div class="dashboard-nav">
+                <button class="nav-btn active" onclick="switchDashboardTab('marketer', 'browse')">Browse Products</button>
+                <button class="nav-btn" onclick="switchDashboardTab('marketer', 'orders')">My Orders</button>
+                <button class="nav-btn" onclick="switchDashboardTab('marketer', 'earnings')">Earnings</button>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Marketer Browse -->
+                <div class="dashboard-section active" id="marketer-browse">
+                    <div style="margin-bottom: 30px;">
+                        <input type="text" placeholder="Search products..." style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px;">
+                    </div>
+                    <div class="product-grid" id="marketerProductGrid">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Marketer Orders -->
+                <div class="dashboard-section" id="marketer-orders">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                        <h3>My Orders</h3>
+                        <button class="btn" onclick="openCreateOrderModal()" style="width: auto;">Create New Order</button>
+                    </div>
+                    <div class="order-grid" id="marketerOrderGrid">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Marketer Earnings -->
+                <div class="dashboard-section" id="marketer-earnings">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>$234</h3>
+                            <p>Total Earnings</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>15</h3>
+                            <p>Completed Orders</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>$45</h3>
+                            <p>This Month</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>8.5%</h3>
+                            <p>Avg Commission</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Dashboard -->
+        <div class="dashboard" id="deliveryDashboard">
+            <div class="dashboard-header">
+                <h2>Delivery Agent Dashboard</h2>
+                <p>Manage deliveries and track your earnings!</p>
+            </div>
+            
+            <div class="dashboard-nav">
+                <button class="nav-btn active" onclick="switchDashboardTab('delivery', 'available')">Available Orders</button>
+                <button class="nav-btn" onclick="switchDashboardTab('delivery', 'active')">Active Deliveries</button>
+                <button class="nav-btn" onclick="switchDashboardTab('delivery', 'completed')">Completed</button>
+                <button class="nav-btn" onclick="switchDashboardTab('delivery', 'earnings')">Earnings</button>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Available Orders -->
+                <div class="dashboard-section active" id="delivery-available">
+                    <h3>Available Delivery Orders</h3>
+                    <div class="order-grid" id="availableOrderGrid">
+                        <!-- Available orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Active Deliveries -->
+                <div class="dashboard-section" id="delivery-active">
+                    <h3>Active Deliveries</h3>
+                    <div class="order-grid" id="activeDeliveryGrid">
+                        <!-- Active deliveries will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Completed Deliveries -->
+                <div class="dashboard-section" id="delivery-completed">
+                    <h3>Completed Deliveries</h3>
+                    <div class="order-grid" id="completedDeliveryGrid">
+                        <!-- Completed deliveries will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Delivery Earnings -->
+                <div class="dashboard-section" id="delivery-earnings">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>$156</h3>
+                            <p>Total Earnings</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>23</h3>
+                            <p>Completed Deliveries</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>$67</h3>
+                            <p>This Month</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>4.8</h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping Cart (for Marketers) -->
+        <div class="cart" id="shoppingCart" style="display: none;">
+            <h4>Shopping Cart</h4>
+            <div id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #e9ecef;">
+                <strong>Total: $<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="btn" onclick="proceedToCheckout()" style="margin-top: 15px;">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <h3>Add New Product</h3>
+            <div class="form-group">
+                <label for="productName">Product Name</label>
+                <input type="text" id="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Price ($)</label>
+                <input type="number" id="productPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="productQuantity">Quantity</label>
+                <input type="number" id="productQuantity" required>
+            </div>
+            <div class="form-group">
+                <label for="productCategory">Category</label>
+                <select id="productCategory">
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="home">Home & Garden</option>
+                    <option value="books">Books</option>
+                    <option value="sports">Sports</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" onclick="addProduct()">Add Product</button>
+                <button class="btn btn-secondary" onclick="closeModal('addProductModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="createOrderModal">
+        <div class="modal-content">
+            <h3>Create New Order</h3>
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="customerPhone">Customer Phone</label>
+                <input type="tel" id="customerPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="customerAddress">Delivery Address</label>
+                <textarea id="customerAddress" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="commissionRate">Commission Rate (%)</label>
+                <input type="number" id="commissionRate" step="0.1" value="10" required>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-success" onclick="createOrder()">Create Order</button>
+                <button class="btn btn-secondary" onclick="closeModal('createOrderModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state management
+        let currentUser = null;
+        let currentRole = null;
+        let products = [];
+        let orders = [];
+        let cart = [];
+
+        // Initialize sample data
+        function initializeData() {
+            products = [
+                { id: 1, name: "Wireless Headphones", price: 89.99, quantity: 50, category: "electronics", merchant: "Tech Store", description: "High-quality wireless headphones with noise cancellation" },
+                { id: 2, name: "Cotton T-Shirt", price: 19.99, quantity: 100, category: "clothing", merchant: "Fashion Hub", description: "Comfortable cotton t-shirt available in multiple colors" },
+                { id: 3, name: "Coffee Maker", price: 129.99, quantity: 25, category: "home", merchant: "Home Essentials", description: "Programmable coffee maker with 12-cup capacity" },
+                { id: 4, name: "Running Shoes", price: 79.99, quantity: 40, category: "sports", merchant: "Sports World", description: "Lightweight running shoes with excellent cushioning" },
+                { id: 5, name: "Smartphone Case", price: 24.99, quantity: 75, category: "electronics", merchant: "Tech Store", description: "Durable smartphone case with drop protection" }
+            ];
+
+            orders = [
+                { id: 1, customerName: "John Doe", customerPhone: "+1234567890", customerAddress: "123 Main St, City", status: "pending", total: 89.99, commission: 9.00, items: [{ id: 1, quantity: 1 }] },
+                { id: 2, customerName: "Jane Smith", customerPhone: "+1987654321", customerAddress: "456 Oak Ave, Town", status: "confirmed", total: 149.98, commission: 15.00, items: [{ id: 2, quantity: 2 }, { id: 5, quantity: 1 }] },
+                { id: 3, customerName: "Bob Johnson", customerPhone: "+1122334455", customerAddress: "789 Pine St, Village", status: "in-progress", total: 209.98, commission: 21.00, items: [{ id: 3, quantity: 1 }, { id: 4, quantity: 1 }] }
+            ];
+        }
+
+        // Authentication functions
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Auth').classList.add('active');
+        }
+
+        function sendOTP() {
+            const phone = document.getElementById('phoneNumber').value;
+            if (phone) {
+                document.getElementById('otpSection').style.display = 'block';
+                alert('OTP sent to ' + phone + '. Use "123456" for demo.');
+            }
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('otpCode').value;
+            if (otp === '123456') {
+                showRoleSelection();
+            } else {
+                alert('Invalid OTP. Use "123456" for demo.');
+            }
+        }
+
+        function googleLogin() {
+            // Simulate Google login
+            alert('Google login successful!');
+            showRoleSelection();
+        }
+
+        function showRoleSelection() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('roleSelection').classList.add('active');
+        }
+
+        function selectRole(role) {
+            currentRole = role;
+            document.getElementById('roleSelection').style.display = 'none';
+            
+            // Show appropriate dashboard
+            document.getElementById(role + 'Dashboard').classList.add('active');
+            
+            // Initialize data and load dashboard content
+            initializeData();
+            loadDashboardContent(role);
+            
+            if (role === 'marketer') {
+                document.getElementById('shoppingCart').style.display = 'block';
+                updateCart();
+            }
+        }
+
+        // Dashboard navigation
+        function switchDashboardTab(role, tab) {
+            // Update navigation
+            document.querySelectorAll(`#${role}Dashboard .nav-btn`).forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll(`#${role}Dashboard .dashboard-section`).forEach(section => section.classList.remove('active'));
+            document.getElementById(`${role}-${tab}`).classList.add('active');
+            
+            // Load specific content
+            loadDashboardContent(role, tab);
+        }
+
+        function loadDashboardContent(role, tab = 'overview') {
+            switch (role) {
+                case 'merchant':
+                    loadMerchantContent(tab);
+                    break;
+                case 'marketer':
+                    loadMarketerContent(tab);
+                    break;
+                case 'delivery':
+                    loadDeliveryContent(tab);
+                    break;
+            }
+        }
+
+        function loadMerchantContent(tab) {
+            switch (tab) {
+                case 'products':
+                    loadMerchantProducts();
+                    break;
+                case 'orders':
+                    loadMerchantOrders();
+                    break;
+            }
+        }
+
+        function loadMarketerContent(tab) {
+            switch (tab) {
+                case 'browse':
+                    loadProductBrowser();
+                    break;
+                case 'orders':
+                    loadMarketerOrders();
+                    break;
+            }
+        }
+
+        function loadDeliveryContent(tab) {
+            switch (tab) {
+                case 'available':
+                    loadAvailableOrders();
+                    break;
+                case 'active':
+                    loadActiveDeliveries();
+                    break;
+                case 'completed':
+                    loadCompletedDeliveries();
+                    break;
+            }
+        }
+
+        // Merchant functions
+        function loadMerchantProducts() {
+            const grid = document.getElementById('merchantProductGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <h4>${product.name}</h4>
+                    <p>${product.description}</p>
+                    <p><strong>Price: ${product.price}</strong></p>
+                    <p>Quantity: ${product.quantity}</p>
+                    <p>Category: ${product.category}</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-warning" onclick="editProduct(${product.id})" style="width: auto; margin-right: 10px;">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteProduct(${product.id})" style="width: auto;">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadMerchantOrders() {
+            const grid = document.getElementById('merchantOrderGrid');
+            grid.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <h4>Order #${order.id}</h4>
+                    <p><strong>Customer:</strong> ${order.customerName}</p>
+                    <p><strong>Phone:</strong> ${order.customerPhone}</p>
+                    <p><strong>Address:</strong> ${order.customerAddress}</p>
+                    <p><strong>Total:</strong> ${order.total}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${order.status}">${order.status}</span></p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn" onclick="updateOrderStatus(${order.id})" style="width: auto;">Update Status</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Marketer functions
+        function loadProductBrowser() {
+            const grid = document.getElementById('marketerProductGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <h4>${product.name}</h4>
+                    <p>${product.description}</p>
+                    <p><strong>Price: ${product.price}</strong></p>
+                    <p>Store: ${product.merchant}</p>
+                    <p>Available: ${product.quantity}</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn" onclick="addToCart(${product.id})" style="width: auto;">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadMarketerOrders() {
+            const grid = document.getElementById('marketerOrderGrid');
+            grid.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <h4>Order #${order.id}</h4>
+                    <p><strong>Customer:</strong> ${order.customerName}</p>
+                    <p><strong>Total:</strong> ${order.total}</p>
+                    <p><strong>Commission:</strong> ${order.commission}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${order.status}">${order.status}</span></p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn" onclick="trackOrder(${order.id})" style="width: auto;">Track Order</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Delivery functions
+        function loadAvailableOrders() {
+            const availableOrders = orders.filter(order => order.status === 'confirmed');
+            const grid = document.getElementById('availableOrderGrid');
+            grid.innerHTML = availableOrders.map(order => `
+                <div class="order-card">
+                    <h4>Order #${order.id}</h4>
+                    <p><strong>Pickup:</strong> Tech Store, 123 Business St</p>
+                    <p><strong>Delivery:</strong> ${order.customerAddress}</p>
+                    <p><strong>Total:</strong> ${order.total}</p>
+                    <p><strong>Delivery Fee:</strong> $5.99</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-success" onclick="acceptOrder(${order.id})" style="width: auto; margin-right: 10px;">Accept</button>
+                        <button class="btn btn-secondary" onclick="rejectOrder(${order.id})" style="width: auto;">Reject</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadActiveDeliveries() {
+            const activeOrders = orders.filter(order => order.status === 'in-progress');
+            const grid = document.getElementById('activeDeliveryGrid');
+            grid.innerHTML = activeOrders.map(order => `
+                <div class="order-card">
+                    <h4>Order #${order.id}</h4>
+                    <p><strong>Customer:</strong> ${order.customerName}</p>
+                    <p><strong>Phone:</strong> ${order.customerPhone}</p>
+                    <p><strong>Address:</strong> ${order.customerAddress}</p>
+                    <p><strong>Total:</strong> ${order.total}</p>
+                    <p><strong>Payment:</strong> Cash on Delivery</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-success" onclick="markDelivered(${order.id})" style="width: auto;">Mark as Delivered</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadCompletedDeliveries() {
+            const completedOrders = orders.filter(order => order.status === 'delivered');
+            const grid = document.getElementById('completedDeliveryGrid');
+            grid.innerHTML = completedOrders.map(order => `
+                <div class="order-card">
+                    <h4>Order #${order.id}</h4>
+                    <p><strong>Customer:</strong> ${order.customerName}</p>
+                    <p><strong>Address:</strong> ${order.customerAddress}</p>
+                    <p><strong>Total:</strong> ${order.total}</p>
+                    <p><strong>Delivery Fee:</strong> $5.99</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-delivered">Delivered</span></p>
+                </div>
+            `).join('');
+        }
+
+        // Cart functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCart();
+            alert(`${product.name} added to cart!`);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        ${item.price} x ${item.quantity}
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" style="background: #dc3545; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;">×</button>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+            openCreateOrderModal();
+        }
+
+        // Modal functions
+        function openAddProductModal() {
+            document.getElementById('addProductModal').classList.add('active');
+        }
+
+        function openCreateOrderModal() {
+            document.getElementById('createOrderModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Product management
+        function addProduct() {
+            const name = document.getElementById('productName').value;
+            const description = document.getElementById('productDescription').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const quantity = parseInt(document.getElementById('productQuantity').value);
+            const category = document.getElementById('productCategory').value;
+            
+            if (name && price && quantity) {
+                const newProduct = {
+                    id: products.length + 1,
+                    name,
+                    description,
+                    price,
+                    quantity,
+                    category,
+                    merchant: "My Store"
+                };
+                
+                products.push(newProduct);
+                loadMerchantProducts();
+                closeModal('addProductModal');
+                
+                // Clear form
+                document.getElementById('productName').value = '';
+                document.getElementById('productDescription').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productQuantity').value = '';
+                
+                alert('Product added successfully!');
+            }
+        }
+
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const newName = prompt('Enter new product name:', product.name);
+                const newPrice = prompt('Enter new price:', product.price);
+                const newQuantity = prompt('Enter new quantity:', product.quantity);
+                
+                if (newName) product.name = newName;
+                if (newPrice) product.price = parseFloat(newPrice);
+                if (newQuantity) product.quantity = parseInt(newQuantity);
+                
+                loadMerchantProducts();
+                alert('Product updated successfully!');
+            }
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== productId);
+                loadMerchantProducts();
+                alert('Product deleted successfully!');
+            }
+        }
+
+        // Order management
+        function createOrder() {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const commissionRate = parseFloat(document.getElementById('commissionRate').value);
+            
+            if (customerName && customerPhone && customerAddress && cart.length > 0) {
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const commission = (total * commissionRate) / 100;
+                
+                const newOrder = {
+                    id: orders.length + 1,
+                    customerName,
+                    customerPhone,
+                    customerAddress,
+                    status: 'pending',
+                    total,
+                    commission,
+                    items: cart.map(item => ({ id: item.id, quantity: item.quantity }))
+                };
+                
+                orders.push(newOrder);
+                cart = [];
+                updateCart();
+                loadMarketerOrders();
+                closeModal('createOrderModal');
+                
+                // Clear form
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerPhone').value = '';
+                document.getElementById('customerAddress').value = '';
+                
+                alert('Order created successfully!');
+            }
+        }
+
+        function updateOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                const newStatus = prompt('Enter new status (pending, confirmed, in-progress, delivered):', order.status);
+                if (newStatus && ['pending', 'confirmed', 'in-progress', 'delivered'].includes(newStatus)) {
+                    order.status = newStatus;
+                    loadMerchantOrders();
+                    alert('Order status updated!');
+                }
+            }
+        }
+
+        function acceptOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'in-progress';
+                loadAvailableOrders();
+                loadActiveDeliveries();
+                alert('Order accepted! You can now manage it in Active Deliveries.');
+            }
+        }
+
+        function rejectOrder(orderId) {
+            alert('Order rejected. It will be offered to other delivery agents.');
+        }
+
+        function markDelivered(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                if (confirm('Confirm cash payment received from customer?')) {
+                    order.status = 'delivered';
+                    loadActiveDeliveries();
+                    loadCompletedDeliveries();
+                    alert('Order marked as delivered! Payment confirmed.');
+                }
+            }
+        }
+
+        function trackOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                alert(`Order #${orderId} Status: ${order.status}\nCustomer: ${order.customerName}\nTotal: ${order.total}`);
+            }
+        }
+
+        // Initialize the application
+        window.addEventListener('load', function() {
+            // Close modals when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
